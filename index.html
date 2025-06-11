@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Form Validation</title>
+  </head>
+  <body>
+    <form id="form" novalidate>
+      <p>
+        <label for="email">
+          <span>Email:</span>
+          <input type="email" id="email" name="email" required minlength="8" />
+          <span class="error" id="emailError" aria-live="polite"></span>
+        </label>
+      </p>
+
+      <p>
+        <label for="country">
+          <span>Country:</span>
+          <select id="country" name="country" required>
+            <option value="" disabled selected>Select your country</option>
+            <option value="ch">Switzerland</option>
+            <option value="fr">France</option>
+            <option value="de">Germany</option>
+            <option value="nl">Netherlands</option>
+          </select>
+          <span class="error" id="countryError" aria-live="polite"></span>
+        </label>
+      </p>
+
+      <p>
+        <label for="postalCode">
+          <span>Postal Code:</span>
+          <input type="text" id="postalCode" name="postalCode" required />
+          <span class="error" id="postalCodeError" aria-live="polite"></span>
+        </label>
+      </p>
+
+      <p>
+        <label for="password">
+          <span>Password:</span>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            minlength="8"
+            maxlength="20"
+          />
+          <span class="error" id="passwordError" aria-live="polite"></span>
+        </label>
+      </p>
+
+      <p>
+        <label for="confirmPassword">
+          <span>Password conformation:</span>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            required
+            minlength="8"
+            maxlength="20"
+          />
+          <span
+            class="error"
+            id="confirmPasswordError"
+            aria-live="polite"
+          ></span>
+        </label>
+      </p>
+
+      <button>Submit</button>
+    </form>
+  </body>
+  <script src="index.js"></script>
+</html>
