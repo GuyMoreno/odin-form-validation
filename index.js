@@ -20,20 +20,28 @@ const confirmPasswordError = document.getElementById("confirmPasswordError");
 
 // Validation handler
 function validateField(input, error) {
+  // firstly check the password confirmation
   if (input.id === "confirmPassword" && input.value !== passwordInput.value) {
     error.textContent = "Passwords don't match.";
     error.classList.add("active");
+
+    // after checking the function gets out
     return;
   }
 
+  // secondly use checkValidity built-in method that checks the html5 validation rules (like required, minlength, etc.)
   if (input.checkValidity()) {
+    // if valid, remove the error message and clear the active class
     error.textContent = "";
     error.classList.remove("active");
   } else {
-    // check for custom validity message first
+    // check if there is a custop built-in validation message
+    // if there is, set the error text to that message
     if (input.validationMessage) {
       error.textContent = input.validationMessage;
       error.classList.add("active");
+
+      // if there is no custom message, use the showError function
     } else {
       showError(input, error);
     }
@@ -52,9 +60,10 @@ function validateField(input, error) {
   // check every input inside array for convinience
 
   // selects the appropriate error element based on the input's id
+  // for example, if the input's id is "email",
+  //  the error element will be "emailError"
   const error = document.getElementById(`${input.id}Error`);
 
-  // add event listeners for input and blur events
   // live validate
   input.addEventListener("input", () => validateField(input, error));
 });
@@ -71,7 +80,12 @@ form.addEventListener("submit", (e) => {
     postalCodeInput,
   ].forEach((input) => {
     const error = document.getElementById(`${input.id}Error`);
+
+    // check again despite the live validation
     validateField(input, error);
+
+    // if the input is invalid, set hasErrors to true
+    // this will be used to prevent the form submission
     if (!input.checkValidity()) {
       hasErrors = true;
     }
@@ -110,9 +124,20 @@ function showError(inputElement, errorElement) {
   errorElement.classList.add("active");
 }
 
+// A dictionary of regex patterns and messages for different countries
+// This will be used to validate the postal codes based on the selected country
 const constraints = {
+  // the KEY is the country code,
+  // the VALUE is an array with two elements:
+  // 1. a regex pattern to validate the postal code
+  // 2. a message to display if the postal code is invalid
+  // the regex pattern is used to check the postal code format
+
   ch: [
+    // (1) a regex pattern for Swiss postal codes
     "^(CH-)?\\d{4}$",
+
+    // (2) a message to display if the postal code is invalid
     "Swiss postal codes must have exactly 4 digits: e.g. CH-1950 or 1950",
   ],
   fr: [
@@ -130,12 +155,16 @@ const constraints = {
 };
 
 function checkPostalCode() {
-  // Check the postal code based on the selected country
 
+  // Get the selected country from the country input
   const country = countryInput.value;
+
+  // 
   const constraint = new RegExp(constraints[country]?.[0] || ".*");
+  // Get the error message for the selected country or a default message
   const message = constraints[country]?.[1] || "";
 
+  // constraints is an object with country codes as keys
   if (constraint.test(postalCodeInput.value)) {
     postalCodeInput.setCustomValidity("");
   } else {
